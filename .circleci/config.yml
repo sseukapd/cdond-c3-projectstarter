@@ -185,10 +185,10 @@ workflows:
             - test-backend 
             - scan-frontend 
             # - scan-backend
-          filters:
-            branches:
-              only: 
-                - test
+          # filters:
+          #   branches:
+          #     only: 
+          #       - test
       - configure-infrastructure:
           requires:
             - deploy-infrastructure
