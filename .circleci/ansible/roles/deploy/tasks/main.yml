@@ -27,19 +27,19 @@
     global: yes
     production: yes
     state: present
-# - name: Copy zipped artifacts
-#   become: yes
-#   copy:
-#     src: ~/project/artifact.tar.gz
-#     dest: ~/backend/
+- name: Creates directory
+  file:
+    path: ~/project/backend/
+    state: directory
+    recurse: yes
 - name: Unarchive artifacts
   unarchive:
     src: ~/project/artifact.tar.gz
-    dest: ~/backend/
-- name: "execute node"
+    dest: ~/project/backend/
+- name: Start app
   become: yes
   shell: |
-    cd ~/backend
+    cd ~/project/backend/
     npm install
     pm2 stop default
     pm2 start npm -- start
