@@ -28,9 +28,11 @@
     production: yes
     state: present
 - name: Creates directory
+  become: yes
   file:
     path: ~/project/backend/
     state: directory
+    mode: 0777
     recurse: yes
 - name: Unarchive artifacts
   unarchive:
