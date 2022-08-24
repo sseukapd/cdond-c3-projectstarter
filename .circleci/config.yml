@@ -279,7 +279,7 @@ workflows:
           filters:
             branches:
               only: 
-                - master
+                - dev
       - configure-infrastructure:
           requires:
             - deploy-infrastructure
