@@ -33,6 +33,11 @@
     path: ~/project/backend
     state: directory
     mode: '0755'
+- name: list directories
+  become: yes
+  shell: |
+    ls -al ~/
+    ls -al ~/project/
 - name: Unarchive artifacts
   unarchive:
     src: ~/project/artifact.tar.gz
