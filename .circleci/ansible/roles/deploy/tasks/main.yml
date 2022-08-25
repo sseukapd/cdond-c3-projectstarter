@@ -30,22 +30,17 @@
 - name: Creates directory
   become: yes
   file:
-    path: ~/project/backend
+    path: ~/backend
     state: directory
     mode: '0755'
-- name: list directories
-  become: yes
-  shell: |
-    ls -al ~/
-    ls -al ~/project/
 - name: Unarchive artifacts
   unarchive:
     src: ~/project/artifact.tar.gz
-    dest: ~/project/backend/
+    dest: ~/backend
 - name: Start app
   become: yes
   shell: |
-    cd ~/project/backend/
+    cd ~/backend
     npm install
     pm2 stop default
     pm2 start npm -- start
