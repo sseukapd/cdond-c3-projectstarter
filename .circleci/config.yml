@@ -45,6 +45,7 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
+  
   test-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -59,6 +60,7 @@ jobs:
             cd frontend
             npm install
             npm run test
+  
   test-backend:
     docker:
       - image: circleci/node:13.8.0
@@ -73,6 +75,7 @@ jobs:
             cd backend
             npm install
             npm run test
+  
   scan-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -88,6 +91,7 @@ jobs:
             npm install
             npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical
+  
   scan-backend:
     docker:
       - image: circleci/node:13.8.0
@@ -104,6 +108,7 @@ jobs:
             npm audit fix --audit-level=critical --force
             npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical
+  
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
@@ -163,7 +168,6 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      # Checkout code from git
       - checkout
       - run:
           name: Run migrations
@@ -179,15 +183,12 @@ jobs:
             then
               curl https://kvdb.io/JJbjDo68enHry6D6fMW7CF/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
-     # Here's where you will add some code to rollback on failure
       - destroy-environment
   
   deploy-frontend:
     docker:
-      # Docker image here that supports AWS CLI
       - image: python:3.11-rc-alpine
     steps:
-      # Checkout code from git
       - checkout
       - run:
           name: Install dependencies
@@ -213,7 +214,6 @@ jobs:
             npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-      # Here's where you will add some code to rollback on failure
       - destroy-environment      
                     
   deploy-backend:

@@ -39,6 +39,7 @@
     state: directory
 
 - name: Unarchive artifacts
+  become: yes
   unarchive:
     src: ~/project/artifact.tar.gz
     dest: /home/ubuntu/backend
