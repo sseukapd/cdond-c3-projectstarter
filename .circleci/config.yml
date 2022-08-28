@@ -209,7 +209,6 @@ jobs:
           path: ~/project/backend/migrations_dump.txt
           destination: migrations_dump.txt
       - destroy-environment
-      - revert-migrations
   
   deploy-frontend:
     docker:
@@ -347,13 +346,13 @@ workflows:
       - run-migrations:
           requires: 
             - configure-infrastructure
-      # - deploy-frontend:
-      #     requires: 
-      #       - run-migrations
-      # - deploy-backend:
-      #     requires: 
-      #       - run-migrations
-      # - smoke-test:
-      #     requires: 
-      #       - deploy-backend
-      #       - deploy-frontend
+      - deploy-frontend:
+          requires: 
+            - run-migrations
+      - deploy-backend:
+          requires: 
+            - run-migrations
+      - smoke-test:
+          requires: 
+            - deploy-backend
+            - deploy-frontend
