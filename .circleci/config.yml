@@ -205,6 +205,9 @@ jobs:
             then
               curl https://kvdb.io/JJbjDo68enHry6D6fMW7CF/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
+      - store_artifacts:
+          path: ~/project/backend/migrations_dump.txt
+          destination: migrations_dump.txt
       - destroy-environment
       - revert-migrations
   
