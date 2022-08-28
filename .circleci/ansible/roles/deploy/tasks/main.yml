@@ -1,6 +1,6 @@
 ---
 - name: export env variables
-  become: yes
+  # become: yes
   shell: |
     export TYPEORM_HOST="{{ lookup('env', 'TYPEORM_HOST') }}"
     export TYPEORM_ENTITIES="{{ lookup('env', 'TYPEORM_ENTITIES') }}"
@@ -54,14 +54,14 @@
     dest: /home/ubuntu/backend
 
 - name: Start app
-  become: yes
+  # become: yes
   shell: |
     cd /home/ubuntu/backend
     npm install
     pm2 stop default
     pm2 start npm -- start
   register: print_result
-  
+
 - name: print message
   debug:
     msg: "{{ print_result.stdout_lines }}"
