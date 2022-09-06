@@ -282,6 +282,7 @@ jobs:
           #   apk add --update nodejs npm
           #   apk add --update npm
           command: |
+            sudo apt-get update
             sudo apt-get install awscli        
       - run:
           name: Backend smoke test
