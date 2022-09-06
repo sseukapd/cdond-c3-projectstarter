@@ -271,15 +271,18 @@ jobs:
   
   smoke-test:
     docker:
-      - image: python:3.11-rc-alpine
+      # - image: python:3.11-rc-alpine
+      - image: cimg/python:3.10.6-node
     steps:
       - checkout
       - run:
           name: Install dependencies
+          # command: |
+          #   apk add --no-cache --update aws-cli curl
+          #   apk add --update nodejs npm
+          #   apk add --update npm
           command: |
-            apk add --no-cache --update aws-cli curl
-            apk add --update nodejs npm
-            apk add --update npm        
+            sudo apt-get install awscli        
       - run:
           name: Backend smoke test
           command: |
