@@ -58,12 +58,8 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: basic_success_1
+      - slack-notify-pass
+      - slack-notify-fail
 
   build-backend:
     docker:
@@ -81,12 +77,8 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: basic_success_1
+      - slack-notify-pass
+      - slack-notify-fail
   
   test-frontend:
     docker:
@@ -185,8 +177,6 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
       - destroy-environment
-      - slack-notify-pass
-      - slack-notify-fail
   
   configure-infrastructure:
     docker:
@@ -207,8 +197,6 @@ jobs:
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
       - destroy-environment
-      - slack-notify-pass
-      - slack-notify-fail
   
   run-migrations:
     docker:
@@ -233,8 +221,6 @@ jobs:
           path: ~/project/backend/migrations_dump.txt
           destination: migrations_dump.txt
       - destroy-environment
-      - slack-notify-pass
-      - slack-notify-fail
   
   deploy-frontend:
     docker:
@@ -265,9 +251,7 @@ jobs:
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       - destroy-environment
-      - revert-migrations
-      - slack-notify-pass
-      - slack-notify-fail      
+      - revert-migrations    
                     
   deploy-backend:
     docker:
@@ -298,8 +282,6 @@ jobs:
             ansible-playbook -i inventory.txt deploy-backend.yml
       - destroy-environment
       - revert-migrations
-      - slack-notify-pass
-      - slack-notify-fail
   
   smoke-test:
     docker:
