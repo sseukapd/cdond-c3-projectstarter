@@ -27,8 +27,19 @@ commands:
             then
               cd ~/project/backend
               npm install
-              npm run migration:revert
+              npm run migrations:revert
             fi
+  slack-notify-pass:
+    steps:
+      - slack/notify:
+          event: pass
+          template: basic_success_1
+  
+  slack-notify-fail:
+    steps:
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
 
 jobs:
   build-frontend:
@@ -174,6 +185,8 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
       - destroy-environment
+      - slack-notify-pass
+      - slack-notify-fail
   
   configure-infrastructure:
     docker:
@@ -194,6 +207,8 @@ jobs:
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
       - destroy-environment
+      - slack-notify-pass
+      - slack-notify-fail
   
   run-migrations:
     docker:
@@ -218,6 +233,8 @@ jobs:
           path: ~/project/backend/migrations_dump.txt
           destination: migrations_dump.txt
       - destroy-environment
+      - slack-notify-pass
+      - slack-notify-fail
   
   deploy-frontend:
     docker:
@@ -248,7 +265,9 @@ jobs:
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       - destroy-environment
-      - revert-migrations      
+      - revert-migrations
+      - slack-notify-pass
+      - slack-notify-fail      
                     
   deploy-backend:
     docker:
@@ -279,6 +298,8 @@ jobs:
             ansible-playbook -i inventory.txt deploy-backend.yml
       - destroy-environment
       - revert-migrations
+      - slack-notify-pass
+      - slack-notify-fail
   
   smoke-test:
     docker:
@@ -313,14 +334,10 @@ jobs:
             else
               exit 1
             fi
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: basic_success_1
       - destroy-environment
       - revert-migrations
+      - slack-notify-pass
+      - slack-notify-fail
 
 workflows:
   default:
