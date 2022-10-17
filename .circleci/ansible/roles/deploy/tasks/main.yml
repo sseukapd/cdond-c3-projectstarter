@@ -18,7 +18,7 @@
   become: yes
   apt:
     name:
-      - nodejs=13.8.0
+      - nodejs=13.8
       - "npm"
       - "build-essential"
     state: latest
