@@ -323,10 +323,10 @@ jobs:
             else
               exit 1
             fi
-      - destroy-environment
-      - revert-migrations
-      - slack-notify-pass
-      - slack-notify-fail
+      # - destroy-environment
+      # - revert-migrations
+      # - slack-notify-pass
+      # - slack-notify-fail
 
   cloudfront-update:
     docker:
