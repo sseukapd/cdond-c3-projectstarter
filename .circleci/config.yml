@@ -209,7 +209,7 @@ jobs:
           name: Install dependencies
           command: |
             sudo apt-get update
-            sudo apt-get install tar gzip aws-cli ansible
+            sudo apt-get install -y tar gzip awscli ansible
       - run:
           name: Run migrations
           command: |
