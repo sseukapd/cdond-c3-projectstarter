@@ -172,6 +172,7 @@ jobs:
             echo "[web]" > ~/project/.circleci/ansible/inventory.txt
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --output text >> ~/project/.circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
@@ -201,15 +202,14 @@ jobs:
   
   run-migrations:
     docker:
-      - image: python:3.11-rc-alpine
+      - image: cimg/python:3.10.6-node
     steps:
       - checkout
       - run:
           name: Install dependencies
           command: |
-            apk add --no-cache --update tar gzip aws-cli ansible
-            apk add --update nodejs npm
-            apk add --update npm
+            sudo apt-get update
+            sudo apt-get install tar gzip aws-cli ansible
       - run:
           name: Run migrations
           command: |
