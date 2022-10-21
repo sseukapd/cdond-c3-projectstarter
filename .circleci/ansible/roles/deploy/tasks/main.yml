@@ -14,36 +14,6 @@
   apt:
     autoremove: yes
 
-# - name: install curl
-#   become: yes
-#   apt: 
-#     name: 
-#       - curl
-#     update_cache: yes
-#     cache_valid_time: 3600
-
-# - name: get url
-#   become: True 
-#   shell: |
-#       curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-
-# - name: install nodejs, npm
-#   become: True
-#   apt:
-#     name: 
-#       - nodejs
-#       - npm
-#     update_cache: yes
-#     cache_valid_time: 3600
-
-# - name: "install pm2"
-#   become: yes
-#   npm:
-#     name: pm2
-#     global: yes
-#     production: yes
-#     state: present
-
 - name: "install nodejs, npm"
   become: yes
   apt:
